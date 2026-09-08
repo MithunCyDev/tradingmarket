@@ -1,0 +1,44 @@
+{
+  "instruments": [
+    {
+      "id": "XAUUSD",
+      "label": "GOLD",
+      "tvSymbol": "OANDA:XAUUSD",
+      "yahooSymbol": "GC=F",
+      "priceDecimals": 2,
+      "marketKind": "cme_metals"
+    },
+    {
+      "id": "BTCUSD",
+      "label": "BTC",
+      "tvSymbol": "BINANCE:BTCUSDT",
+      "yahooSymbol": "BTC-USD",
+      "priceDecimals": 1,
+      "marketKind": "crypto"
+    },
+    {
+      "id": "XAGUSD",
+      "label": "SILVER",
+      "tvSymbol": "OANDA:XAGUSD",
+      "yahooSymbol": "SI=F",
+      "priceDecimals": 3,
+      "marketKind": "cme_metals"
+    },
+    {
+      "id": "USOIL",
+      "label": "US OIL",
+      "tvSymbol": "TVC:USOIL",
+      "yahooSymbol": "CL=F",
+      "priceDecimals": 2,
+      "marketKind": "cme_energy"
+    },
+    {
+      "id": "EURUSD",
+      "label": "EUR/USD",
+      "tvSymbol": "FX:EURUSD",
+      "yahooSymbol": "EURUSD=X",
+      "priceDecimals": 5,
+      "marketKind": "forex"
+    }
+  ]
+}

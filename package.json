@@ -1,0 +1,14 @@
+{
+  "name": "tradingmarket",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -n api,web -c cyan,magenta \"npm run dev:api\" \"npm run dev:web\"",
+    "dev:web": "npm run dev --prefix apps/web",
+    "dev:api": "node scripts/dev-api.mjs",
+    "snapshot": "node scripts/run-api.mjs snapshot",
+    "check-signal": "node scripts/run-api.mjs check-signal"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

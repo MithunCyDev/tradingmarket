@@ -1,0 +1,26 @@
+{
+  "symbol": "XAUUSD",
+  "style": "scalp",
+  "analyzedAt": "2026-09-08T19:52:00Z",
+  "action": "long",
+  "confidence": "low",
+  "timeframe": "M5",
+  "timeframeBias": {
+    "M1": "range",
+    "M5": "long",
+    "M15": "short",
+    "H1": "range"
+  },
+  "entryZone": {
+    "low": 4408.0,
+    "high": 4414.0
+  },
+  "stop": 4402.0,
+  "targets": {
+    "tp1": 4422.0,
+    "tp2": 4430.0
+  },
+  "invalidation": 4398.0,
+  "narrative": "M5 is bid off the session low while H1 is still range. This is a desk-verification scalp ticket.",
+  "riskNotes": "Yahoo M5 can lag the OANDA tape. Replace by saying analyze scalp GOLD."
+}
