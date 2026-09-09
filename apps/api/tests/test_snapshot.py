@@ -47,7 +47,7 @@ def test_market_snapshot_includes_all_timeframes() -> None:
 
     snapshot = build_market_snapshot(
         symbol="XAUUSD",
-        yahoo_symbol="GC=F",
+        yahoo_symbol="PAXG-USD",
         last_price=160.0,
         bars_by_timeframe=bars,
     )
@@ -70,7 +70,7 @@ def test_market_snapshot_includes_scalp_timeframes_when_present() -> None:
 
     snapshot = build_market_snapshot(
         symbol="XAUUSD",
-        yahoo_symbol="GC=F",
+        yahoo_symbol="PAXG-USD",
         last_price=160.0,
         bars_by_timeframe=bars,
     )

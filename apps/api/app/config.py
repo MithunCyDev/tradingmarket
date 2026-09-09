@@ -40,6 +40,12 @@ class Settings(BaseSettings):
     def snapshots_dir(self) -> Path:
         return self.resolved_data_dir() / "snapshots"
 
+    def charts_dir(self, style: str = "swing") -> Path:
+        folder = self.resolved_data_dir() / "charts"
+        if style == "scalp":
+            folder = folder / "scalp"
+        return folder
+
 
 @lru_cache
 def get_settings() -> Settings:

@@ -1,12 +1,12 @@
 # Agent playbook — Elite Forex
 
-When the user says **analyze** an instrument in this repo, produce a **signal ticket**, not a research essay. Phone Cursor chats use this same flow. The PC browser at `http://localhost:5173` polls the ticket every 3 seconds. The desk has a **SWING | SCALP** toggle; each style is a separate file.
+When the user says **analyze** an instrument in this repo, produce a **signal ticket and a marked graph**, not a research essay. Phone Cursor chats use this same flow. The PC browser at `http://localhost:5173` polls the ticket every 3 seconds. The desk has a **SWING | SCALP** toggle; each style is a separate file. Every analyze reply must include the ticket text **and** the graph in the same message.
 
 ## Instruments
 
 | User says            | Desk id | TradingView     | Yahoo    |
 | -------------------- | ------- | --------------- | -------- |
-| GOLD                 | XAUUSD  | OANDA:XAUUSD    | GC=F     |
+| GOLD                 | XAUUSD  | OANDA:XAUUSD    | PAXG-USD |
 | BTC / Bitcoin        | BTCUSD  | BINANCE:BTCUSDT | BTC-USD  |
 | Silver               | XAGUSD  | OANDA:XAGUSD    | SI=F     |
 | US OIL / Oil / Crude | USOIL   | TVC:USOIL       | CL=F     |
@@ -33,7 +33,21 @@ npm run snapshot -- GOLD
 npm run check-signal -- GOLD
 ```
 
-6. Tell the user the action, entry zone, stop, TP1/TP2, invalidation, and that the open desk (SWING) should update within a few seconds. The marked chart and **Why HIGH / MEDIUM / LOW / NO TRADE** board are computed from this ticket plus the snapshot (HTF stack, signal timeframe, M15, ATR stop, swing). Write `timeframeBias` and levels honestly so the visual reason matches the tape.
+6. Render the marked chart from the same Yahoo OHLC (do not invent candles):
+
+```powershell
+npm run chart -- GOLD
+```
+
+Copy the PNG into `/opt/cursor/artifacts/` if `npm run chart` did not already print `ARTIFACT …`. Use a unique snake_case name.
+
+7. Tell the user the action, entry zone, stop, TP1/TP2, invalidation, and that the open desk (SWING) should update within a few seconds. **In the same reply**, embed the graph with an HTML image tag (never markdown `![]()` to a workspace path — that shows “Waiting for upload…” and does not count):
+
+```html
+<img alt="GOLD H1 marked chart" src="/opt/cursor/artifacts/xauusd_swing_h1_no_trade.png" />
+```
+
+Use the `ARTIFACT` path printed by `npm run chart`. The marked chart and **Why HIGH / MEDIUM / LOW / NO TRADE** board are computed from this ticket plus the snapshot. Write `timeframeBias` and levels honestly so the visual reason matches the tape.
 
 ## Scalp analyze flow
 
@@ -49,7 +63,13 @@ npm run check-signal -- GOLD
 npm run check-signal -- GOLD --style scalp
 ```
 
-6. Tell the user the action, entry zone, stop, TP1/TP2, invalidation, and that the open desk **SCALP** toggle should update within a few seconds. Confluence uses H1 + M15 as the stack, M5 as the signal frame, and M1 as the LTF guard.
+6. Render the scalp chart:
+
+```powershell
+npm run chart -- GOLD --style scalp
+```
+
+7. Tell the user the action, entry zone, stop, TP1/TP2, invalidation, and that the open desk **SCALP** toggle should update within a few seconds. Embed the graph with an HTML `<img>` tag to `/opt/cursor/artifacts/…` in the same reply. Confluence uses H1 + M15 as the stack, M5 as the signal frame, and M1 as the LTF guard.
 
 ## Swing ticket contract
 
@@ -87,7 +107,7 @@ Swing rules:
 - For `long` or `short`, `entryZone`, `stop`, `targets.tp1`, `targets.tp2`, and `invalidation` are required and must come from snapshot prices (last close, ATR, swing highs/lows). Do not invent round numbers that are not near those levels.
 - For `no_trade`, set `entryZone`, `stop`, `targets`, and `invalidation` to `null`.
 - Prefer **NO TRADE** when HTF and LTF disagree, ATR is missing, or the tape is mid-range with no level.
-- Yahoo can lag. If the live chart and the snapshot disagree, say so in `riskNotes` and lower confidence or choose `no_trade`.
+- Yahoo can lag. GOLD snapshots use spot-linked `PAXG-USD` (about the same dollars as OANDA:XAUUSD), never COMEX `GC=F` futures. If the live chart and the snapshot disagree by more than a few dollars, say so in `riskNotes` and choose `no_trade`. Do not present futures prints as the desk spot tape.
 
 ## Scalp ticket contract
 
@@ -122,7 +142,7 @@ Scalp rules:
 - Levels come from the **M5** snapshot (last close, ATR, swing highs/lows). Do not invent round numbers that are not near those levels.
 - For `no_trade`, null the level fields the same as swing.
 - Prefer **NO TRADE** when H1 and M15 disagree, M1/M5/ATR are missing, or price is mid-range with no M5 level.
-- Always mention Yahoo vs TradingView lag in `riskNotes`. Drop confidence or stand aside if they disagree. GOLD uses delayed `GC=F`; BTC snapshot is `BTC-USD` vs the live Binance chart.
+- Always mention Yahoo vs TradingView lag in `riskNotes`. Drop confidence or stand aside if they disagree. GOLD uses spot-linked `PAXG-USD` vs the live OANDA chart; BTC snapshot is `BTC-USD` vs the live Binance chart. Never analyze GOLD off `GC=F`.
 - Do not chase M1 entries on this feed.
 
 ## What not to do
@@ -131,3 +151,5 @@ Scalp rules:
 - Do not auto-trade or talk as if orders were placed.
 - Do not write tickets for symbols outside the five on the desk.
 - Do not write a scalp ticket into `data/signals/{id}.json`, or a swing ticket into `data/signals/scalp/{id}.json`.
+- Do not send an analyze reply without the marked graph in the same message.
+- Do not embed charts as markdown images of local files (`![](/workspace/…)`). Always use an HTML `<img>` pointing at `/opt/cursor/artifacts/…`.

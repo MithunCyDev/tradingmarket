@@ -13,6 +13,8 @@ __pycache__/
 Thumbs.db
 data/signals/*.json
 data/snapshots/*.json
+data/charts/**/*.png
 !data/signals/.gitkeep
 !data/snapshots/.gitkeep
+!data/charts/.gitkeep
 apps/web/dist/
