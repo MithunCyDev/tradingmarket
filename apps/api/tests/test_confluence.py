@@ -43,7 +43,7 @@ def _snapshot(atr: float = 8.0, swings: list[float] | None = None) -> MarketSnap
     )
     return MarketSnapshot(
         symbol="XAUUSD",
-        yahoo_symbol="GC=F",
+        yahoo_symbol="PAXG-USD",
         captured_at=datetime(2026, 9, 8, 18, 0, tzinfo=UTC),
         last_price=2644.0,
         timeframes={"H1": frame, "M15": frame, "H4": frame, "D1": frame},
@@ -148,7 +148,7 @@ def _scalp_snapshot(atr: float = 8.0, swings: list[float] | None = None) -> Mark
     )
     return MarketSnapshot(
         symbol="XAUUSD",
-        yahoo_symbol="GC=F",
+        yahoo_symbol="PAXG-USD",
         captured_at=datetime(2026, 9, 8, 18, 0, tzinfo=UTC),
         last_price=2644.0,
         timeframes={"M1": frame, "M5": frame, "M15": frame, "H1": frame},

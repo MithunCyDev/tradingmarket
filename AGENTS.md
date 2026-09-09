@@ -6,7 +6,7 @@ When the user says **analyze** an instrument in this repo, produce a **signal ti
 
 | User says            | Desk id | TradingView     | Yahoo    |
 | -------------------- | ------- | --------------- | -------- |
-| GOLD                 | XAUUSD  | OANDA:XAUUSD    | GC=F     |
+| GOLD                 | XAUUSD  | OANDA:XAUUSD    | PAXG-USD |
 | BTC / Bitcoin        | BTCUSD  | BINANCE:BTCUSDT | BTC-USD  |
 | Silver               | XAGUSD  | OANDA:XAGUSD    | SI=F     |
 | US OIL / Oil / Crude | USOIL   | TVC:USOIL       | CL=F     |
@@ -87,7 +87,7 @@ Swing rules:
 - For `long` or `short`, `entryZone`, `stop`, `targets.tp1`, `targets.tp2`, and `invalidation` are required and must come from snapshot prices (last close, ATR, swing highs/lows). Do not invent round numbers that are not near those levels.
 - For `no_trade`, set `entryZone`, `stop`, `targets`, and `invalidation` to `null`.
 - Prefer **NO TRADE** when HTF and LTF disagree, ATR is missing, or the tape is mid-range with no level.
-- Yahoo can lag. If the live chart and the snapshot disagree, say so in `riskNotes` and lower confidence or choose `no_trade`.
+- Yahoo can lag. GOLD snapshots use spot-linked `PAXG-USD` (about the same dollars as OANDA:XAUUSD), never COMEX `GC=F` futures. If the live chart and the snapshot disagree by more than a few dollars, say so in `riskNotes` and choose `no_trade`. Do not present futures prints as the desk spot tape.
 
 ## Scalp ticket contract
 
@@ -122,7 +122,7 @@ Scalp rules:
 - Levels come from the **M5** snapshot (last close, ATR, swing highs/lows). Do not invent round numbers that are not near those levels.
 - For `no_trade`, null the level fields the same as swing.
 - Prefer **NO TRADE** when H1 and M15 disagree, M1/M5/ATR are missing, or price is mid-range with no M5 level.
-- Always mention Yahoo vs TradingView lag in `riskNotes`. Drop confidence or stand aside if they disagree. GOLD uses delayed `GC=F`; BTC snapshot is `BTC-USD` vs the live Binance chart.
+- Always mention Yahoo vs TradingView lag in `riskNotes`. Drop confidence or stand aside if they disagree. GOLD uses spot-linked `PAXG-USD` vs the live OANDA chart; BTC snapshot is `BTC-USD` vs the live Binance chart. Never analyze GOLD off `GC=F`.
 - Do not chase M1 entries on this feed.
 
 ## What not to do

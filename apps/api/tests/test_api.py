@@ -58,6 +58,7 @@ def test_lists_the_five_desk_instruments(tmp_path: Path) -> None:
     ids = [item["id"] for item in response.json()["data"]]
     assert ids == ["XAUUSD", "BTCUSD", "XAGUSD", "USOIL", "EURUSD"]
     assert response.json()["data"][0]["tvSymbol"] == "OANDA:XAUUSD"
+    assert response.json()["data"][0]["yahooSymbol"] == "PAXG-USD"
 
 
 def test_missing_signal_returns_structured_404(tmp_path: Path) -> None:

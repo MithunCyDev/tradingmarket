@@ -10,7 +10,7 @@ class PartialMarketData:
         raise MarketDataError("unused")
 
     def quote(self, yahoo_symbol: str) -> RawQuote:
-        if yahoo_symbol == "GC=F":
+        if yahoo_symbol == "PAXG-USD":
             raise MarketDataError("gold down")
         return RawQuote(last=100.0, previous_close=99.0, as_of=datetime(2026, 9, 9, 12, 0, tzinfo=UTC))
 

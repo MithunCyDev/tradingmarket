@@ -111,7 +111,7 @@ export const FALLBACK_INSTRUMENTS: Instrument[] = [
     id: "XAUUSD",
     label: "GOLD",
     tvSymbol: "OANDA:XAUUSD",
-    yahooSymbol: "GC=F",
+    yahooSymbol: "PAXG-USD",
     priceDecimals: 2,
     marketKind: "cme_metals",
   },
