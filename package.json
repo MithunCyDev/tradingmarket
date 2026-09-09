@@ -6,7 +6,8 @@
     "dev:web": "npm run dev --prefix apps/web",
     "dev:api": "node scripts/dev-api.mjs",
     "snapshot": "node scripts/run-api.mjs snapshot",
-    "check-signal": "node scripts/run-api.mjs check-signal"
+    "check-signal": "node scripts/run-api.mjs check-signal",
+    "chart": "node scripts/run-api.mjs chart"
   },
   "devDependencies": {
     "concurrently": "^9.2.1"

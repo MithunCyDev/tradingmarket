@@ -24,11 +24,11 @@ class AnalysisService:
             symbol=symbol,
             analyzed_at=ticket.analyzed_at,
             confluence=build_confluence(ticket, snapshot),
-            levels=_levels_from_ticket(ticket),
+            levels=levels_from_ticket(ticket),
         )
 
 
-def _levels_from_ticket(ticket: SignalTicket) -> list[AnalysisLevel]:
+def levels_from_ticket(ticket: SignalTicket) -> list[AnalysisLevel]:
     levels: list[AnalysisLevel] = []
     if ticket.entry_zone is not None:
         levels.append(

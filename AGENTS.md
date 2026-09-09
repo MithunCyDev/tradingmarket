@@ -1,6 +1,6 @@
 # Agent playbook — Elite Forex
 
-When the user says **analyze** an instrument in this repo, produce a **signal ticket**, not a research essay. Phone Cursor chats use this same flow. The PC browser at `http://localhost:5173` polls the ticket every 3 seconds. The desk has a **SWING | SCALP** toggle; each style is a separate file.
+When the user says **analyze** an instrument in this repo, produce a **signal ticket and a marked graph**, not a research essay. Phone Cursor chats use this same flow. The PC browser at `http://localhost:5173` polls the ticket every 3 seconds. The desk has a **SWING | SCALP** toggle; each style is a separate file. Every analyze reply must include the ticket text **and** the graph in the same message.
 
 ## Instruments
 
@@ -33,7 +33,21 @@ npm run snapshot -- GOLD
 npm run check-signal -- GOLD
 ```
 
-6. Tell the user the action, entry zone, stop, TP1/TP2, invalidation, and that the open desk (SWING) should update within a few seconds. The marked chart and **Why HIGH / MEDIUM / LOW / NO TRADE** board are computed from this ticket plus the snapshot (HTF stack, signal timeframe, M15, ATR stop, swing). Write `timeframeBias` and levels honestly so the visual reason matches the tape.
+6. Render the marked chart from the same Yahoo OHLC (do not invent candles):
+
+```powershell
+npm run chart -- GOLD
+```
+
+Copy the PNG into `/opt/cursor/artifacts/` if `npm run chart` did not already print `ARTIFACT …`. Use a unique snake_case name.
+
+7. Tell the user the action, entry zone, stop, TP1/TP2, invalidation, and that the open desk (SWING) should update within a few seconds. **In the same reply**, embed the graph with an HTML image tag (never markdown `![]()` to a workspace path — that shows “Waiting for upload…” and does not count):
+
+```html
+<img alt="GOLD H1 marked chart" src="/opt/cursor/artifacts/xauusd_swing_h1_no_trade.png" />
+```
+
+Use the `ARTIFACT` path printed by `npm run chart`. The marked chart and **Why HIGH / MEDIUM / LOW / NO TRADE** board are computed from this ticket plus the snapshot. Write `timeframeBias` and levels honestly so the visual reason matches the tape.
 
 ## Scalp analyze flow
 
@@ -49,7 +63,13 @@ npm run check-signal -- GOLD
 npm run check-signal -- GOLD --style scalp
 ```
 
-6. Tell the user the action, entry zone, stop, TP1/TP2, invalidation, and that the open desk **SCALP** toggle should update within a few seconds. Confluence uses H1 + M15 as the stack, M5 as the signal frame, and M1 as the LTF guard.
+6. Render the scalp chart:
+
+```powershell
+npm run chart -- GOLD --style scalp
+```
+
+7. Tell the user the action, entry zone, stop, TP1/TP2, invalidation, and that the open desk **SCALP** toggle should update within a few seconds. Embed the graph with an HTML `<img>` tag to `/opt/cursor/artifacts/…` in the same reply. Confluence uses H1 + M15 as the stack, M5 as the signal frame, and M1 as the LTF guard.
 
 ## Swing ticket contract
 
@@ -131,3 +151,5 @@ Scalp rules:
 - Do not auto-trade or talk as if orders were placed.
 - Do not write tickets for symbols outside the five on the desk.
 - Do not write a scalp ticket into `data/signals/{id}.json`, or a swing ticket into `data/signals/scalp/{id}.json`.
+- Do not send an analyze reply without the marked graph in the same message.
+- Do not embed charts as markdown images of local files (`![](/workspace/…)`). Always use an HTML `<img>` pointing at `/opt/cursor/artifacts/…`.
